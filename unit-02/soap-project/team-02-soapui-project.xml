@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="5cfa0ac9-0283-4f55-bd9c-1140e38600af" activeEnvironment="Default" name="team-02" resourceRoot="" soapui-version="5.9.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="861b06f2-4063-4e42-987c-6da527155699" wsaVersion="NONE" name="EnrollmentBinding" type="wsdl" bindingName="{http://com.school}EnrollmentBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-02/schoolEnrollment.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-02/schoolEnrollment.wsdl"><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-02/schoolEnrollment.wsdl</con:url><con:content><![CDATA[<!--WSDL para el Equipo 2: Inscripción a Cursos Escolares-->
+<wsdl:definitions targetNamespace="http://com.school" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.school">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://com.school" elementFormDefault="qualified">
+      <xs:include schemaLocation="school.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <!--Mensajes para la operación de crear inscripción-->
+  <wsdl:message name="CreateEnrollmentRequest">
+    <wsdl:part name="parameter" element="tns:enrollmentRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CreateEnrollmentResponse">
+    <wsdl:part name="parameter" element="tns:enrollmentConfirmation"/>
+  </wsdl:message>
+  <!--Mensajes para la operación de cancelar inscripción-->
+  <wsdl:message name="CancelEnrollmentRequest">
+    <wsdl:part name="parameter" element="tns:cancelEnrollmentRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CancelEnrollmentResponse">
+    <wsdl:part name="parameter" element="tns:cancelEnrollmentConfirmation"/>
+  </wsdl:message>
+  <!--Definición de las operaciones del servicio-->
+  <wsdl:portType name="EnrollmentPortType">
+    <wsdl:operation name="createEnrollment">
+      <wsdl:input message="tns:CreateEnrollmentRequest"/>
+      <wsdl:output message="tns:CreateEnrollmentResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelEnrollment">
+      <wsdl:input message="tns:CancelEnrollmentRequest"/>
+      <wsdl:output message="tns:CancelEnrollmentResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Binding de las operaciones a SOAP/HTTP-->
+  <wsdl:binding name="EnrollmentBinding" type="tns:EnrollmentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createEnrollment">
+      <soap:operation soapAction="createEnrollment"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelEnrollment">
+      <soap:operation soapAction="cancelEnrollment"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SchoolEnrollmentService">
+    <wsdl:port name="EnrollmentPort" binding="tns:EnrollmentBinding">
+      <soap:address location="http://localhost:8080/ws/school-enrollment"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-02/school.xsd</con:url><con:content><![CDATA[<!--XSD para el Equipo 2: Inscripción a Cursos Escolares-->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://com.school" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.school">
+  <!--Tipo para la solicitud de inscripción-->
+  <xs:complexType name="enrollmentRequestType">
+    <xs:sequence>
+      <!--ID del estudiante, con formato ST-NNNNN-->
+      <xs:element name="studentId">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="ST-[0-9]{5}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <!--Código del curso, con formato MAT-101-->
+      <xs:element name="courseCode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{3}-[0-9]{3}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <!--Semestre en el que se inscribe el curso-->
+      <xs:element name="semester">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Fall"/>
+            <xs:enumeration value="Spring"/>
+            <xs:enumeration value="Summer"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Tipo para la confirmación de la inscripción-->
+  <xs:complexType name="enrollmentConfirmationType">
+    <xs:sequence>
+      <xs:element name="enrollmentId" type="xs:string"/>
+      <xs:element name="classroom" type="xs:string"/>
+      <xs:element name="professor" type="xs:string" minOccurs="0"/>
+      <xs:element name="tuitionFee" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Elementos raíz para las operaciones-->
+  <xs:element name="enrollmentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="enrollment" type="tns:enrollmentRequestType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="enrollmentConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="confirmation" type="tns:enrollmentConfirmationType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelEnrollmentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="enrollmentId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelEnrollmentConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="xs:string"/>
+        <xs:element name="enrollmentId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws/school-enrollment</con:endpoint></con:endpoints><con:operation id="a638e530-fca4-4ec0-aa1c-24cd0c1b42fd" isOneWay="false" action="cancelEnrollment" name="cancelEnrollment" bindingOperationName="cancelEnrollment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="cfbb9c20-d1b1-463c-8b62-42c3bff94407" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/school-enrollment</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.school">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:cancelEnrollmentRequest>
+         <com:enrollmentId>?</com:enrollmentId>
+      </com:cancelEnrollmentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="cancelEnrollment"/></con:call></con:operation><con:operation id="3497604e-21d5-4732-8be4-b3b3220cdbf4" isOneWay="false" action="createEnrollment" name="createEnrollment" bindingOperationName="createEnrollment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="5f336bd3-64ba-44b3-b64f-b7aeb04ffc60" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/school-enrollment</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.school">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:enrollmentRequest>
+         <com:enrollment>
+            <com:studentId>?</com:studentId>
+            <com:courseCode>?</com:courseCode>
+            <com:semester>?</com:semester>
+         </com:enrollment>
+      </com:enrollmentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="createEnrollment"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="b727074c-ba26-4cae-be40-4ac0b5caf361" activeEnvironment="Default" name="team-01" resourceRoot="" soapui-version="5.9.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="36dbcf1d-ed27-4a2f-ad36-87817e0429c4" wsaVersion="NONE" name="RoomReservationBinding" type="wsdl" bindingName="{http://com.hotel}RoomReservationBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-01/roomReservation.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-01/roomReservation.wsdl"><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-01/roomReservation.wsdl</con:url><con:content><![CDATA[<!--WSDL para el Equipo 6: Reserva de Habitaciones de Hotel-->
+<wsdl:definitions targetNamespace="http://com.hotel" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.hotel">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://com.hotel" elementFormDefault="qualified">
+      <xs:include schemaLocation="hotel.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <!--Mensajes para la operación de reservar habitación-->
+  <wsdl:message name="ReserveRoomRequest">
+    <wsdl:part name="parameter" element="tns:roomReservationRequest"/>
+  </wsdl:message>
+  <wsdl:message name="ReserveRoomResponse">
+    <wsdl:part name="parameter" element="tns:reservationConfirmation"/>
+  </wsdl:message>
+  <!--Mensajes para la operación de cancelar reserva-->
+  <wsdl:message name="CancelReservationRequest">
+    <wsdl:part name="parameter" element="tns:cancelReservationRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CancelReservationResponse">
+    <wsdl:part name="parameter" element="tns:cancelReservationConfirmation"/>
+  </wsdl:message>
+  <!--Definición de las operaciones del servicio-->
+  <wsdl:portType name="RoomReservationPortType">
+    <wsdl:operation name="reserveRoom">
+      <wsdl:input message="tns:ReserveRoomRequest"/>
+      <wsdl:output message="tns:ReserveRoomResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelReservation">
+      <wsdl:input message="tns:CancelReservationRequest"/>
+      <wsdl:output message="tns:CancelReservationResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Binding de las operaciones a SOAP/HTTP-->
+  <wsdl:binding name="RoomReservationBinding" type="tns:RoomReservationPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="reserveRoom">
+      <soap:operation soapAction="reserveRoom"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelReservation">
+      <soap:operation soapAction="cancelReservation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RoomReservationService">
+    <wsdl:port name="RoomReservationPort" binding="tns:RoomReservationBinding">
+      <soap:address location="http://localhost:8080/ws/room-reservation"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-01/hotel.xsd</con:url><con:content><![CDATA[<!--XSD para el Equipo 6: Reserva de Habitaciones de Hotel-->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://com.hotel" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.hotel">
+  <!--Tipo para la solicitud de reserva-->
+  <xs:complexType name="roomReservationRequestType">
+    <xs:sequence>
+      <xs:element name="guestName" type="xs:string"/>
+      <xs:element name="checkInDate" type="xs:date"/>
+      <xs:element name="checkOutDate" type="xs:date"/>
+      <xs:element name="numberOfGuests" type="xs:positiveInteger"/>
+      <xs:element name="roomType">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Single"/>
+            <xs:enumeration value="Double"/>
+            <xs:enumeration value="Suite"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Tipo para la confirmación de la reserva-->
+  <xs:complexType name="reservationConfirmationType">
+    <xs:sequence>
+      <xs:element name="reservationId" type="xs:string"/>
+      <xs:element name="roomNumber" type="xs:string"/>
+      <xs:element name="totalCost" type="xs:decimal"/>
+      <xs:element name="confirmationStatus" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Elementos raíz para las operaciones-->
+  <xs:element name="roomReservationRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="reservation" type="tns:roomReservationRequestType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reservationConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="confirmation" type="tns:reservationConfirmationType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelReservationRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="reservationId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelReservationConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="xs:string"/>
+        <xs:element name="reservationId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws/room-reservation</con:endpoint></con:endpoints><con:operation id="70b210f1-bed6-4404-aa2a-13f37d3cea4d" isOneWay="false" action="cancelReservation" name="cancelReservation" bindingOperationName="cancelReservation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="c6f870c4-9cdf-4813-adfb-fd64cd6d5a76" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/room-reservation</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.hotel">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:cancelReservationRequest>
+         <com:reservationId>?</com:reservationId>
+      </com:cancelReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="cancelReservation"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="fe2ba6c7-a40d-463f-8eaf-e9d19033025f" isOneWay="false" action="reserveRoom" name="reserveRoom" bindingOperationName="reserveRoom" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="b3f860d7-4ac2-4150-b67e-ee7640bfb736" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/room-reservation</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.hotel">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:roomReservationRequest>
+         <com:reservation>
+            <com:guestName>?</com:guestName>
+            <com:checkInDate>?</com:checkInDate>
+            <com:checkOutDate>?</com:checkOutDate>
+            <com:numberOfGuests>?</com:numberOfGuests>
+            <com:roomType>?</com:roomType>
+         </com:reservation>
+      </com:roomReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="reserveRoom"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="79d6c34d-9b9b-4a58-ad35-06da4026bd26" activeEnvironment="Default" name="team-04" resourceRoot="" soapui-version="5.9.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="94c9d041-3669-4da5-ac8a-f8dc138dcc63" wsaVersion="NONE" name="AppointmentBinding" type="wsdl" bindingName="{http://com.clinic}AppointmentBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-04/appointmentBooking.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-04/appointmentBooking.wsdl"><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-04/appointmentBooking.wsdl</con:url><con:content><![CDATA[<!--WSDL para el Equipo 4: Agendamiento de Citas Médicas-->
+<wsdl:definitions targetNamespace="http://com.clinic" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.clinic">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://com.clinic" elementFormDefault="qualified">
+      <xs:include schemaLocation="clinic.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <!--Mensajes para la operación de agendar cita-->
+  <wsdl:message name="BookAppointmentRequest">
+    <wsdl:part name="parameter" element="tns:appointmentRequest"/>
+  </wsdl:message>
+  <wsdl:message name="BookAppointmentResponse">
+    <wsdl:part name="parameter" element="tns:appointmentConfirmation"/>
+  </wsdl:message>
+  <!--Mensajes para la operación de cancelar cita-->
+  <wsdl:message name="CancelAppointmentRequest">
+    <wsdl:part name="parameter" element="tns:cancelAppointmentRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CancelAppointmentResponse">
+    <wsdl:part name="parameter" element="tns:cancelAppointmentConfirmation"/>
+  </wsdl:message>
+  <!--Definición de las operaciones del servicio-->
+  <wsdl:portType name="AppointmentPortType">
+    <wsdl:operation name="bookAppointment">
+      <wsdl:input message="tns:BookAppointmentRequest"/>
+      <wsdl:output message="tns:BookAppointmentResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAppointment">
+      <wsdl:input message="tns:CancelAppointmentRequest"/>
+      <wsdl:output message="tns:CancelAppointmentResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Binding de las operaciones a SOAP/HTTP-->
+  <wsdl:binding name="AppointmentBinding" type="tns:AppointmentPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="bookAppointment">
+      <soap:operation soapAction="bookAppointment"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAppointment">
+      <soap:operation soapAction="cancelAppointment"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AppointmentBookingService">
+    <wsdl:port name="AppointmentPort" binding="tns:AppointmentBinding">
+      <soap:address location="http://localhost:8080/ws/appointment-booking"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-04/clinic.xsd</con:url><con:content><![CDATA[<!--XSD para el Equipo 4: Agendamiento de Citas Médicas-->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://com.clinic" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.clinic">
+  <!--Tipo para la solicitud de cita-->
+  <xs:complexType name="appointmentRequestType">
+    <xs:sequence>
+      <!--ID del paciente-->
+      <xs:element name="patientId" type="xs:string"/>
+      <!--ID del doctor-->
+      <xs:element name="doctorId" type="xs:string"/>
+      <!--Fecha y hora de la cita-->
+      <xs:element name="appointmentDateTime" type="xs:dateTime"/>
+      <!--Motivo de la consulta-->
+      <xs:element name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Tipo para la confirmación de la cita-->
+  <xs:complexType name="appointmentConfirmationType">
+    <xs:sequence>
+      <xs:element name="appointmentId" type="xs:string"/>
+      <xs:element name="officeNumber" type="xs:string"/>
+      <xs:element name="specialty" type="xs:string"/>
+      <xs:element name="status" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Elementos raíz para las operaciones-->
+  <xs:element name="appointmentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="appointment" type="tns:appointmentRequestType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="appointmentConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="confirmation" type="tns:appointmentConfirmationType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelAppointmentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="appointmentId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelAppointmentConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="xs:string"/>
+        <xs:element name="appointmentId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws/appointment-booking</con:endpoint></con:endpoints><con:operation id="da27da03-092e-4017-8d48-9c2e6421cedb" isOneWay="false" action="bookAppointment" name="bookAppointment" bindingOperationName="bookAppointment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ea26ae0c-b3e6-4e99-95f6-f73a00135fdd" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/appointment-booking</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.clinic">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:appointmentRequest>
+         <com:appointment>
+            <com:patientId>?</com:patientId>
+            <com:doctorId>?</com:doctorId>
+            <com:appointmentDateTime>?</com:appointmentDateTime>
+            <com:reason>?</com:reason>
+         </com:appointment>
+      </com:appointmentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="bookAppointment"/></con:call></con:operation><con:operation id="031c7707-91ed-438e-b996-a22fa7f2c0d1" isOneWay="false" action="cancelAppointment" name="cancelAppointment" bindingOperationName="cancelAppointment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="d6713c14-b554-4681-8755-1c6bf074cbf9" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/appointment-booking</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.clinic">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:cancelAppointmentRequest>
+         <com:appointmentId>?</com:appointmentId>
+      </com:cancelAppointmentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="cancelAppointment"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

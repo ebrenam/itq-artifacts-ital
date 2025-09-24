@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="5f505733-b0e6-415f-961b-4cf7235f8c75" activeEnvironment="Default" name="team-03" resourceRoot="" soapui-version="5.9.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="d5f3bf74-f508-4d46-91c0-ad06eaf846b0" wsaVersion="NONE" name="BookLoanBinding" type="wsdl" bindingName="{http://com.library}BookLoanBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-03/bookLoan.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-03/bookLoan.wsdl"><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-03/bookLoan.wsdl</con:url><con:content><![CDATA[<!--WSDL para el Equipo 3: Préstamo de Libros en Biblioteca-->
+<wsdl:definitions targetNamespace="http://com.library" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.library">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://com.library" elementFormDefault="qualified">
+      <xs:include schemaLocation="library.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <!--Mensajes para la operación de solicitar préstamo-->
+  <wsdl:message name="RequestBookLoanRequest">
+    <wsdl:part name="parameter" element="tns:loanRequest"/>
+  </wsdl:message>
+  <wsdl:message name="RequestBookLoanResponse">
+    <wsdl:part name="parameter" element="tns:loanConfirmation"/>
+  </wsdl:message>
+  <!--Mensajes para la operación de devolver libro-->
+  <wsdl:message name="ReturnBookRequest">
+    <wsdl:part name="parameter" element="tns:returnBookRequest"/>
+  </wsdl:message>
+  <wsdl:message name="ReturnBookResponse">
+    <wsdl:part name="parameter" element="tns:returnBookConfirmation"/>
+  </wsdl:message>
+  <!--Definición de las operaciones del servicio-->
+  <wsdl:portType name="BookLoanPortType">
+    <wsdl:operation name="requestBookLoan">
+      <wsdl:input message="tns:RequestBookLoanRequest"/>
+      <wsdl:output message="tns:RequestBookLoanResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="returnBook">
+      <wsdl:input message="tns:ReturnBookRequest"/>
+      <wsdl:output message="tns:ReturnBookResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Binding de las operaciones a SOAP/HTTP-->
+  <wsdl:binding name="BookLoanBinding" type="tns:BookLoanPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="requestBookLoan">
+      <soap:operation soapAction="requestBookLoan"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="returnBook">
+      <soap:operation soapAction="returnBook"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BookLoanService">
+    <wsdl:port name="BookLoanPort" binding="tns:BookLoanBinding">
+      <soap:address location="http://localhost:8080/ws/book-loan"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-03/library.xsd</con:url><con:content><![CDATA[<!--XSD para el Equipo 3: Préstamo de Libros en Biblioteca-->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://com.library" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.library">
+  <!--Tipo para la solicitud de préstamo-->
+  <xs:complexType name="loanRequestType">
+    <xs:sequence>
+      <!--ID del miembro de la biblioteca-->
+      <xs:element name="memberId">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="LIB-[A-Z]{2}-[0-9]{4}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <!--ISBN del libro a solicitar-->
+      <xs:element name="isbn" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Tipo para la confirmación del préstamo-->
+  <xs:complexType name="loanConfirmationType">
+    <xs:sequence>
+      <xs:element name="loanId" type="xs:string"/>
+      <xs:element name="bookTitle" type="xs:string"/>
+      <!--Fecha de devolución obligatoria-->
+      <xs:element name="dueDate" type="xs:date"/>
+      <xs:element name="status" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Elementos raíz para las operaciones-->
+  <xs:element name="loanRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="loan" type="tns:loanRequestType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="loanConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="confirmation" type="tns:loanConfirmationType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="returnBookRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="loanId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="returnBookConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="xs:string"/>
+        <xs:element name="loanId" type="xs:string"/>
+        <xs:element name="fine" type="xs:decimal" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws/book-loan</con:endpoint></con:endpoints><con:operation id="91c4344a-885d-457b-9971-451ed60f390d" isOneWay="false" action="requestBookLoan" name="requestBookLoan" bindingOperationName="requestBookLoan" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="cba5da1a-3cab-457e-b2af-7dc33738e52f" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/book-loan</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.library">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:loanRequest>
+         <com:loan>
+            <com:memberId>?</com:memberId>
+            <com:isbn>?</com:isbn>
+         </com:loan>
+      </com:loanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="requestBookLoan"/></con:call></con:operation><con:operation id="14d6a9b4-26ed-4202-8bcf-6902e15ece2a" isOneWay="false" action="returnBook" name="returnBook" bindingOperationName="returnBook" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="911ba178-ee05-41c0-8050-6e6517e856e0" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/book-loan</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.library">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:returnBookRequest>
+         <com:loanId>?</com:loanId>
+      </com:returnBookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="returnBook"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

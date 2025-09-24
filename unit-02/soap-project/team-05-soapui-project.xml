@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="ba9dd49e-8a90-4258-aeff-c29919828e66" activeEnvironment="Default" name="team-05" resourceRoot="" soapui-version="5.9.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="4e20ce83-8872-43a9-a40a-070518119a5b" wsaVersion="NONE" name="TicketBookingBinding" type="wsdl" bindingName="{http://com.cinema}TicketBookingBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-05/ticketBooking.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-05/ticketBooking.wsdl"><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-05/ticketBooking.wsdl</con:url><con:content><![CDATA[<!--WSDL para el Equipo 5: Compra de Boletos de Cine-->
+<wsdl:definitions targetNamespace="http://com.cinema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.cinema">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://com.cinema" elementFormDefault="qualified">
+      <xs:include schemaLocation="cinema.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <!--Mensajes para la operación de comprar boletos-->
+  <wsdl:message name="BookTicketsRequest">
+    <wsdl:part name="parameter" element="tns:ticketRequest"/>
+  </wsdl:message>
+  <wsdl:message name="BookTicketsResponse">
+    <wsdl:part name="parameter" element="tns:bookingConfirmation"/>
+  </wsdl:message>
+  <!--Mensajes para la operación de cancelar compra-->
+  <wsdl:message name="CancelBookingRequest">
+    <wsdl:part name="parameter" element="tns:cancelBookingRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CancelBookingResponse">
+    <wsdl:part name="parameter" element="tns:cancelBookingConfirmation"/>
+  </wsdl:message>
+  <!--Definición de las operaciones del servicio-->
+  <wsdl:portType name="TicketBookingPortType">
+    <wsdl:operation name="bookTickets">
+      <wsdl:input message="tns:BookTicketsRequest"/>
+      <wsdl:output message="tns:BookTicketsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelBooking">
+      <wsdl:input message="tns:CancelBookingRequest"/>
+      <wsdl:output message="tns:CancelBookingResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Binding de las operaciones a SOAP/HTTP-->
+  <wsdl:binding name="TicketBookingBinding" type="tns:TicketBookingPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="bookTickets">
+      <soap:operation soapAction="bookTickets"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelBooking">
+      <soap:operation soapAction="cancelBooking"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TicketBookingService">
+    <wsdl:port name="TicketBookingPort" binding="tns:TicketBookingBinding">
+      <soap:address location="http://localhost:8080/ws/ticket-booking"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:/Users/ebrena/Documents/ITQ/itq-artifacts/unit-02/exam/team-05/cinema.xsd</con:url><con:content><![CDATA[<!--XSD para el Equipo 5: Compra de Boletos de Cine-->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://com.cinema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.cinema">
+  <!--Tipo para la solicitud de boletos-->
+  <xs:complexType name="ticketRequestType">
+    <xs:sequence>
+      <xs:element name="movieTitle" type="xs:string"/>
+      <xs:element name="showTime" type="xs:time"/>
+      <xs:element name="numberOfTickets" type="xs:positiveInteger"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Tipo para la confirmación de la compra-->
+  <xs:complexType name="bookingConfirmationType">
+    <xs:sequence>
+      <xs:element name="bookingId" type="xs:string"/>
+      <xs:element name="screenNumber" type="xs:int"/>
+      <!--Lista de asientos asignados, ej: "F10, F11"-->
+      <xs:element name="seatNumbers" type="xs:string"/>
+      <xs:element name="totalPrice" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!--Elementos raíz para las operaciones-->
+  <xs:element name="ticketRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="booking" type="tns:ticketRequestType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bookingConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="confirmation" type="tns:bookingConfirmationType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelBookingRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bookingId" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelBookingConfirmation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="xs:string"/>
+        <xs:element name="bookingId" type="xs:string"/>
+        <xs:element name="refundAmount" type="xs:decimal" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws/ticket-booking</con:endpoint></con:endpoints><con:operation id="98e60662-9fd4-4417-be3b-b4f2c4d77f1f" isOneWay="false" action="bookTickets" name="bookTickets" bindingOperationName="bookTickets" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="671f8e73-b2ab-48cf-ae28-b4697838f4cf" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/ticket-booking</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.cinema">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:ticketRequest>
+         <com:booking>
+            <com:movieTitle>?</com:movieTitle>
+            <com:showTime>?</com:showTime>
+            <com:numberOfTickets>?</com:numberOfTickets>
+         </com:booking>
+      </com:ticketRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="bookTickets"/></con:call></con:operation><con:operation id="bbcdb2e2-0709-49fc-8498-43d99a4f0e0a" isOneWay="false" action="cancelBooking" name="cancelBooking" bindingOperationName="cancelBooking" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="061cdca5-4150-41c9-9383-83f50ff5648d" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/ticket-booking</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.cinema">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:cancelBookingRequest>
+         <com:bookingId>?</com:bookingId>
+      </com:cancelBookingRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="cancelBooking"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
