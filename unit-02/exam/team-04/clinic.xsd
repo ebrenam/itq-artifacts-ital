@@ -67,4 +67,28 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- Tipo para la solicitud de disponibilidad del doctor -->
+	<xs:complexType name="doctorAvailabilityRequestType">
+		<xs:sequence>
+			<xs:element name="doctorId" type="xs:string"/>
+			<xs:element name="date" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Tipo para la respuesta de disponibilidad del doctor -->
+	<xs:complexType name="doctorAvailabilityResponseType">
+		<xs:sequence>
+			<xs:element name="availableSlots" type="xs:dateTime" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Elementos raíz para la nueva operación -->
+	<xs:element name="doctorAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="availabilityQuery" type="tns:doctorAvailabilityRequestType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

@@ -27,6 +27,14 @@
 		<wsdl:part name="parameter" element="tns:cancelEnrollmentConfirmation"/>
 	</wsdl:message>
 
+	<!-- Mensajes para la operación de obtener detalles del curso -->
+	<wsdl:message name="GetCourseDetailsRequest">
+		<wsdl:part name="parameter" element="tns:courseDetailsRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GetCourseDetailsResponse">
+		<wsdl:part name="parameter" element="tns:courseDetailsResponseType"/>
+	</wsdl:message>
+
 	<!-- Definición de las operaciones del servicio -->
 	<wsdl:portType name="EnrollmentPortType">
 		<wsdl:operation name="createEnrollment">
@@ -36,6 +44,10 @@
 		<wsdl:operation name="cancelEnrollment">
 			<wsdl:input message="tns:CancelEnrollmentRequest"/>
 			<wsdl:output message="tns:CancelEnrollmentResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getCourseDetails">
+			<wsdl:input message="tns:GetCourseDetailsRequest"/>
+			<wsdl:output message="tns:GetCourseDetailsResponse"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
@@ -49,6 +61,11 @@
 		</wsdl:operation>
 		<wsdl:operation name="cancelEnrollment">
 			<soap:operation soapAction="cancelEnrollment"/>
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCourseDetails">
+			<soap:operation soapAction="getCourseDetails"/>
 			<wsdl:input><soap:body use="literal"/></wsdl:input>
 			<wsdl:output><soap:body use="literal"/></wsdl:output>
 		</wsdl:operation>

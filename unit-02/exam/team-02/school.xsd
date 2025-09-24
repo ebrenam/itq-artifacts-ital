@@ -84,4 +84,35 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- Tipo para la solicitud de detalles del curso -->
+	<xs:complexType name="courseDetailsRequestType">
+		<xs:sequence>
+			<xs:element name="courseCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[A-Z]{3}-[0-9]{3}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Tipo para la respuesta de detalles del curso -->
+	<xs:complexType name="courseDetailsResponseType">
+		<xs:sequence>
+			<xs:element name="courseName" type="xs:string"/>
+			<xs:element name="credits" type="xs:int"/>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Elementos raíz para la nueva operación -->
+	<xs:element name="courseDetailsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="detailsQuery" type="tns:courseDetailsRequestType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

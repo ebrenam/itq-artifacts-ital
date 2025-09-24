@@ -27,6 +27,14 @@
 		<wsdl:part name="parameter" element="tns:cancelReservationConfirmation"/>
 	</wsdl:message>
 
+	<!-- Mensajes para la operación de verificar disponibilidad -->
+	<wsdl:message name="CheckAvailabilityRequest">
+		<wsdl:part name="parameter" element="tns:checkAvailabilityRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CheckAvailabilityResponse">
+		<wsdl:part name="parameter" element="tns:checkAvailabilityResponseType"/>
+	</wsdl:message>
+
 	<!-- Definición de las operaciones del servicio -->
 	<wsdl:portType name="RoomReservationPortType">
 		<wsdl:operation name="reserveRoom">
@@ -36,6 +44,10 @@
 		<wsdl:operation name="cancelReservation">
 			<wsdl:input message="tns:CancelReservationRequest"/>
 			<wsdl:output message="tns:CancelReservationResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkAvailability">
+			<wsdl:input message="tns:CheckAvailabilityRequest"/>
+			<wsdl:output message="tns:CheckAvailabilityResponse"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
@@ -49,6 +61,11 @@
 		</wsdl:operation>
 		<wsdl:operation name="cancelReservation">
 			<soap:operation soapAction="cancelReservation"/>
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="checkAvailability">
+			<soap:operation soapAction="checkAvailability"/>
 			<wsdl:input><soap:body use="literal"/></wsdl:input>
 			<wsdl:output><soap:body use="literal"/></wsdl:output>
 		</wsdl:operation>

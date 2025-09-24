@@ -69,4 +69,38 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- Tipo para la solicitud de verificar disponibilidad -->
+	<xs:complexType name="checkAvailabilityRequestType">
+		<xs:sequence>
+			<xs:element name="checkInDate" type="xs:date" />
+			<xs:element name="checkOutDate" type="xs:date" />
+			<xs:element name="roomType">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Single"/>
+						<xs:enumeration value="Double"/>
+						<xs:enumeration value="Suite"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Tipo para la respuesta de verificar disponibilidad -->
+	<xs:complexType name="checkAvailabilityResponseType">
+		<xs:sequence>
+			<xs:element name="available" type="xs:boolean" />
+			<xs:element name="availableRooms" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Elementos raíz para la nueva operación -->
+	<xs:element name="checkAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="availabilityQuery" type="tns:checkAvailabilityRequestType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

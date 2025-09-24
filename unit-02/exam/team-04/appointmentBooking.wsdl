@@ -27,6 +27,14 @@
 		<wsdl:part name="parameter" element="tns:cancelAppointmentConfirmation"/>
 	</wsdl:message>
 
+	<!-- Mensajes para la operación de obtener disponibilidad del doctor -->
+	<wsdl:message name="GetDoctorAvailabilityRequest">
+		<wsdl:part name="parameter" element="tns:doctorAvailabilityRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GetDoctorAvailabilityResponse">
+		<wsdl:part name="parameter" element="tns:doctorAvailabilityResponseType"/>
+	</wsdl:message>
+
 	<!-- Definición de las operaciones del servicio -->
 	<wsdl:portType name="AppointmentPortType">
 		<wsdl:operation name="bookAppointment">
@@ -36,6 +44,10 @@
 		<wsdl:operation name="cancelAppointment">
 			<wsdl:input message="tns:CancelAppointmentRequest"/>
 			<wsdl:output message="tns:CancelAppointmentResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDoctorAvailability">
+			<wsdl:input message="tns:GetDoctorAvailabilityRequest"/>
+			<wsdl:output message="tns:GetDoctorAvailabilityResponse"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
@@ -49,6 +61,11 @@
 		</wsdl:operation>
 		<wsdl:operation name="cancelAppointment">
 			<soap:operation soapAction="cancelAppointment"/>
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDoctorAvailability">
+			<soap:operation soapAction="getDoctorAvailability"/>
 			<wsdl:input><soap:body use="literal"/></wsdl:input>
 			<wsdl:output><soap:body use="literal"/></wsdl:output>
 		</wsdl:operation>

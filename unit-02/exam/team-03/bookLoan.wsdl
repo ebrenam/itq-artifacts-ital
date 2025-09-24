@@ -27,6 +27,14 @@
 		<wsdl:part name="parameter" element="tns:returnBookConfirmation"/>
 	</wsdl:message>
 
+	<!-- Mensajes para la operación de verificar disponibilidad de libro -->
+	<wsdl:message name="CheckBookAvailabilityRequest">
+		<wsdl:part name="parameter" element="tns:bookAvailabilityRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CheckBookAvailabilityResponse">
+		<wsdl:part name="parameter" element="tns:bookAvailabilityResponseType"/>
+	</wsdl:message>
+
 	<!-- Definición de las operaciones del servicio -->
 	<wsdl:portType name="BookLoanPortType">
 		<wsdl:operation name="requestBookLoan">
@@ -36,6 +44,10 @@
 		<wsdl:operation name="returnBook">
 			<wsdl:input message="tns:ReturnBookRequest"/>
 			<wsdl:output message="tns:ReturnBookResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkBookAvailability">
+			<wsdl:input message="tns:CheckBookAvailabilityRequest"/>
+			<wsdl:output message="tns:CheckBookAvailabilityResponse"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
@@ -49,6 +61,11 @@
 		</wsdl:operation>
 		<wsdl:operation name="returnBook">
 			<soap:operation soapAction="returnBook"/>
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="checkBookAvailability">
+			<soap:operation soapAction="checkBookAvailability"/>
 			<wsdl:input><soap:body use="literal"/></wsdl:input>
 			<wsdl:output><soap:body use="literal"/></wsdl:output>
 		</wsdl:operation>

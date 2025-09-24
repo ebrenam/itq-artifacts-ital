@@ -69,4 +69,28 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- Tipo para la solicitud de disponibilidad de libro -->
+	<xs:complexType name="bookAvailabilityRequestType">
+		<xs:sequence>
+			<xs:element name="isbn" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Tipo para la respuesta de disponibilidad de libro -->
+	<xs:complexType name="bookAvailabilityResponseType">
+		<xs:sequence>
+			<xs:element name="available" type="xs:boolean"/>
+			<xs:element name="availableCopies" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Elementos raíz para la nueva operación -->
+	<xs:element name="bookAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="availabilityQuery" type="tns:bookAvailabilityRequestType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

@@ -61,4 +61,30 @@
 		</xs:complexType>
 	</xs:element>
 
+	<!-- Tipo para la solicitud de detalles de la película -->
+	<xs:complexType name="movieDetailsRequestType">
+		<xs:sequence>
+			<xs:element name="movieTitle" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Tipo para la respuesta de detalles de la película -->
+	<xs:complexType name="movieDetailsResponseType">
+		<xs:sequence>
+			<xs:element name="synopsis" type="xs:string"/>
+			<xs:element name="durationMinutes" type="xs:int"/>
+			<xs:element name="genre" type="xs:string"/>
+			<xs:element name="showTimes" type="xs:time" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Elementos raíz para la nueva operación -->
+	<xs:element name="movieDetailsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="detailsQuery" type="tns:movieDetailsRequestType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

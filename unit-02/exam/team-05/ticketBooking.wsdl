@@ -27,6 +27,14 @@
 		<wsdl:part name="parameter" element="tns:cancelBookingConfirmation"/>
 	</wsdl:message>
 
+	<!-- Mensajes para la operación de obtener detalles de la película -->
+	<wsdl:message name="GetMovieDetailsRequest">
+		<wsdl:part name="parameter" element="tns:movieDetailsRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GetMovieDetailsResponse">
+		<wsdl:part name="parameter" element="tns:movieDetailsResponseType"/>
+	</wsdl:message>
+
 	<!-- Definición de las operaciones del servicio -->
 	<wsdl:portType name="TicketBookingPortType">
 		<wsdl:operation name="bookTickets">
@@ -36,6 +44,10 @@
 		<wsdl:operation name="cancelBooking">
 			<wsdl:input message="tns:CancelBookingRequest"/>
 			<wsdl:output message="tns:CancelBookingResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getMovieDetails">
+			<wsdl:input message="tns:GetMovieDetailsRequest"/>
+			<wsdl:output message="tns:GetMovieDetailsResponse"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
@@ -49,6 +61,11 @@
 		</wsdl:operation>
 		<wsdl:operation name="cancelBooking">
 			<soap:operation soapAction="cancelBooking"/>
+			<wsdl:input><soap:body use="literal"/></wsdl:input>
+			<wsdl:output><soap:body use="literal"/></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getMovieDetails">
+			<soap:operation soapAction="getMovieDetails"/>
 			<wsdl:input><soap:body use="literal"/></wsdl:input>
 			<wsdl:output><soap:body use="literal"/></wsdl:output>
 		</wsdl:operation>
